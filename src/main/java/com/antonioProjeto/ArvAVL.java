@@ -58,25 +58,26 @@ public class ArvAVL {
         return y;
     }
 
-    // Insere um nó na Árvore AVL
     public boolean inserir(int chave) {
-        raiz = inserir(raiz, chave);
-        return raiz != null;
+        int[] duplicada = new int[]{0};
+        raiz = inserir(raiz, chave, duplicada);
+        return duplicada[0] == 0;
     }
 
-    private Node inserir(Node node, int chave) {
-        // Realiza a inserção normal em uma BST
+    private Node inserir(Node node, int chave, int[] duplicada) {
         if (node == null) {
             return new Node(chave);
         }
 
+
         if (chave < node.chave) {
-            node.esquerda = inserir(node.esquerda, chave);
+            node.esquerda = inserir(node.esquerda, chave, duplicada);
         } else if (chave > node.chave) {
-            node.direita = inserir(node.direita, chave);
+            node.direita = inserir(node.direita, chave, duplicada);
         } else {
             // Chaves duplicadas não são permitidas na Árvore AVL
-            return null;
+            duplicada[0] = 1;
+            return node;
         }
 
         // Atualiza a altura do nó ancestral
